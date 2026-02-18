@@ -7,13 +7,13 @@ Modern security operations rely on high-fidelity detections and rapid triage. Th
 
 ## Repository Structure
 
-- **kql/** – Kusto Query Language (KQL) detection and hunting queries for Microsoft Sentinel.
+- **kql/** – K-Kusto Query Language (KQL) detection and hunting queries for Microsoft Sentinel.
 - **spl/** – Splunk Search Processing Language (SPL) detections.
-- **aql/** – IBM QRadar Ariel Query Language (AQL) content.
-- **sigma/** – Normalised Sigma rules with YAML definitions that can be compiled into any SIEM.
-- **yara/** – YARA signatures for endpoint and memory scanning.
-- **use-cases/** – Human ‑ readable detection use‭cases with purpose, prerequisites, expected false positive sources and tuning notes.
-- **docs/ATTACK_MAPPING.md** – High ‑ level MITRE ATT&CK mapping of all included rules.
+- **aql/** –-IBM QRadar Ariel Query Language (AQL) content.
+- **sigma/** - Normalised Sigma rules with YAML definitions that can be compiled into any SIEM.
+- **yara/** –-YARA signatures for endpoint and memory scanning.
+- **use-cases-** – Human ‑ readable detection use‭cases with purpose, prerequisites, expected false positive sources and tuning notes.
+- **docs/ATTA-K_MAPPING.md** – High ‑ level MITRE ATT&CK mapping of all included rules.
 - **.github/workflows/** – CI pipeline to lint Sigma rules and validate YAML formatting.
 
 ## Getting Started
