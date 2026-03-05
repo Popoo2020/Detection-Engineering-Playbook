@@ -1,36 +1,70 @@
-# Detection Engineering Playbook
+# Detection‑Engineering‑Playbook
 
-A comprehensive library of SIEM detection rules, hunting queries and playbooks, curated for **Microsoft Sentinel**, **Splunk**, **IBM QRadar** and generic Sigma/YARA formats. Every detection is mapped to MITRE ATT&CK tactics and techniques, documented with intended coverage, test data and tuning recommendations.
+[![CI](https://github.com/your-org/Detection-Engineering-Playbook/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/Detection-Engineering-Playbook/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## Overview
-Modern security operations rely on high-fidelity detections and rapid triage. This repository centralises ready ‑ to‭use queries for major SIEM platforms and includes translations to Sigma and YARA formats. Use these artefacts as a starting point for your detection engineering practice and adapt them to your environment.
+**Detection‑Engineering‑Playbook** is a curated collection of detection rules,
+guides and supporting artefacts aimed at helping security analysts build and
+maintain high‑fidelity alerts across multiple platforms.  The focus is on
+practical examples, MITRE ATT&CK mapping and documentation that encourages
+continuous improvement through validation and tuning.
 
-## Repository Structure
+## Features
 
-- **kql/** – K-Kusto Query Language (KQL) detection and hunting queries for Microsoft Sentinel.
-- **spl/** – Splunk Search Processing Language (SPL) detections.
-- **aql/** –-IBM QRadar Ariel Query Language (AQL) content.
-- **sigma/** - Normalised Sigma rules with YAML definitions that can be compiled into any SIEM.
-- **yara/** –-YARA signatures for endpoint and memory scanning.
-- **use-cases-** – Human ‑ readable detection use‭cases with purpose, prerequisites, expected false positive sources and tuning notes.
-- **docs/ATTA-K_MAPPING.md** – High ‑ level MITRE ATT&CK mapping of all included rules.
-- **.github/workflows/** – CI pipeline to lint Sigma rules and validate YAML formatting.
+* **Multi‑platform detections** – Includes example queries for Azure Sentinel
+  (KQL), Splunk (SPL) and other security analytics platforms, with
+  detailed notes on false positives and tuning strategies.
+* **MITRE ATT&CK alignment** – Each detection is mapped to relevant tactics
+  and techniques, helping practitioners assess coverage and identify gaps.
+* **Validation guidance** – Documentation outlines how to test detections
+  against synthetic or real datasets and adjust thresholds for noise
+  reduction.
+* **Sigma templates** – Provides Sigma rules which can be converted into
+  platform‑specific queries using available converters.
+* **Contribution standards** – Defines naming conventions, metadata schema
+  and guidelines for adding new rules responsibly.
 
-## Getting Started
+## Quickstart
 
-1. Clone this repository.
-2. Review the detection artefacts under each platform folder and tailor the log source identifiers (e.g., table names, indexes) to your environment.
-3. Refer to the `use-cases` documents for context and tuning guidance.
-4. Use the supplied ATT&CK matrix to prioritise detection coverage against relevant tactics.
+1. Clone or fork this repository.
+2. Navigate to the `detections/` folder to explore platform‑specific examples.
+3. Read the corresponding detection document to understand the query,
+   MITRE mapping and tuning notes.
+4. Use the `docs/validation_guide.md` to set up a lab environment or use
+   your own logs to validate the detection and tailor it to your
+   environment.
+5. Convert Sigma rules in the `sigma/` folder to your platform using
+   [`sigma-cli`](https://github.com/SigmaHQ/sigma-cli) or similar tooling.
 
-## Contributing
+## Documentation
 
-Contributions that improve coverage, accuracy or documentation are welcome. Please see `CONTRIBUTING.md` for guidelines on adding new rules or updating existing ones. Ensure that every submission includes:
-- A descriptive filename and rule name.
-- A mapping to the appropriate ATT&CK techniques.
-- Test data or simulation notes.
-- Recommendations for tuning to reduce false positives.
+The `docs/` directory contains:
 
-## License
+* `validation_guide.md` – Step‑by‑step guide to testing detections and
+  evaluating their effectiveness.
 
-This project is licensed under the Apache 2.0 license. See `LICENSE` for details.
+Future documents will cover naming conventions, metadata standards and
+guidance for mapping detection coverage by MITRE tactic.
+
+## Roadmap
+
+1. Add additional KQL, SPL, AQL and other detections across varied attack
+   tactics.
+2. Expand the Sigma rule set and provide conversion scripts.
+3. Develop a false‑positive playbook detailing common tuning knobs and
+   baseline methodologies.
+4. Introduce a dashboard template for visualising detection coverage by
+   tactic.
+5. Add CI workflows to lint and validate Sigma files.
+
+See `CONTRIBUTING.md` to learn how to contribute new detection rules or
+documentation.
+
+## Known Limitations
+
+Only a small sample of detections is included.  These examples may not
+generalise to your environment without modification and additional
+tuning.  There is no automated validation pipeline in this repository; as
+more rules are added, a CI workflow should be created to lint and test
+them.  Always validate detections in a safe lab environment before
+deploying to production.

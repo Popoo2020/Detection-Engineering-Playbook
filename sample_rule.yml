@@ -1,0 +1,18 @@
+title: Suspicious PowerShell Encoded Command
+id: sigma-001
+description: Detects PowerShell execution with encoded command argument.
+status: experimental
+author: Security Team
+logsource:
+  product: windows
+  service: security
+  definition: 'This rule requires Windows event logs with process creation events (Event ID 4688).'
+detection:
+  selection:
+    EventID: 4688
+    NewProcessName|contains: powershell.exe
+    CommandLine|contains: EncodedCommand
+  condition: selection
+falsepositives:
+  - Administrative scripts using encoded commands for legitimate automation.
+level: medium
