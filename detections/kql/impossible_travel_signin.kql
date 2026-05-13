@@ -1,0 +1,15 @@
+// Illustrative impossible-travel style sign-in review
+// MITRE ATT&CK: T1078 - Valid Accounts
+// Purpose: Highlight rapid sign-ins from different countries for analyst review.
+SigninLogs
+| where ResultType == 0
+| project TimeGenerated, UserPrincipalName, IPAddress, Location, AppDisplayName
+| sort by UserPrincipalName asc, TimeGenerated asc
+| serialize
+| extend PreviousUser = prev(UserPrincipalName), PreviousTime = prev(TimeGenerated), PreviousLocation = prev(Location)
+| where UserPrincipalName == PreviousUser
+| extend MinutesBetween = datetime_diff('minute', TimeGenerated, PreviousTime)
+| where MinutesBetween between (0 .. 90)
+| where tostring(Location) != tostring(PreviousLocation)
+| project TimeGenerated, UserPrincipalName, IPAddress, Location, PreviousLocation, MinutesBetween, AppDisplayName
+| order by TimeGenerated desc
