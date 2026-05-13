@@ -1,70 +1,112 @@
-# Detection‑Engineering‑Playbook
+# Detection-Engineering-Playbook
 
-[![CI](https://github.com/your-org/Detection-Engineering-Playbook/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/Detection-Engineering-Playbook/actions/workflows/ci.yml)
+[![CI](https://github.com/Popoo2020/Detection-Engineering-Playbook/actions/workflows/ci.yml/badge.svg)](https://github.com/Popoo2020/Detection-Engineering-Playbook/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-**Detection‑Engineering‑Playbook** is a curated collection of detection rules,
-guides and supporting artefacts aimed at helping security analysts build and
-maintain high‑fidelity alerts across multiple platforms.  The focus is on
-practical examples, MITRE ATT&CK mapping and documentation that encourages
-continuous improvement through validation and tuning.
+**Detection-Engineering-Playbook** is a practical workspace for building, documenting and validating security detections.  
+It currently includes working **KQL detection examples**, a **Sigma rule template**, **validation guidance**, and a **test harness that verifies Sigma file structure**.
 
-## Features
+> **Status:** active detection engineering baseline / designed for expansion.
 
-* **Multi‑platform detections** – Includes example queries for Azure Sentinel
-  (KQL), Splunk (SPL) and other security analytics platforms, with
-  detailed notes on false positives and tuning strategies.
-* **MITRE ATT&CK alignment** – Each detection is mapped to relevant tactics
-  and techniques, helping practitioners assess coverage and identify gaps.
-* **Validation guidance** – Documentation outlines how to test detections
-  against synthetic or real datasets and adjust thresholds for noise
-  reduction.
-* **Sigma templates** – Provides Sigma rules which can be converted into
-  platform‑specific queries using available converters.
-* **Contribution standards** – Defines naming conventions, metadata schema
-  and guidelines for adding new rules responsibly.
+## What is implemented
+
+| Capability | Status |
+|---|---|
+| KQL detection for encoded PowerShell patterns | ✅ Implemented |
+| KQL detection for rapid cross-location sign-in anomalies | ✅ Implemented |
+| Sigma rule for suspicious encoded PowerShell execution | ✅ Implemented |
+| Detection tuning note with ATT&CK mapping | ✅ Implemented |
+| General validation guide | ✅ Implemented |
+| CI that validates Sigma rule structure | ✅ Implemented |
+| Larger ATT&CK coverage library | 🟡 Planned |
+| SPL/AQL examples | 🟡 Planned |
+| Sigma conversion automation | 🟡 Planned |
+| Detection coverage dashboard | 🟡 Planned |
+
+## Repository structure
+
+```text
+detections/
+  kql/
+    suspicious_encoded_powershell.kql
+    impossible_travel_signin.kql
+
+sigma/
+  windows_suspicious_encoded_powershell.yml
+
+docs/
+  detections/
+    encoded_powershell.md
+
+validation_guide.md
+requirements.txt
+.github/workflows/ci.yml
+```
+
+## Implemented detection examples
+
+### 1. Suspicious Encoded PowerShell
+
+- **KQL:** `detections/kql/suspicious_encoded_powershell.kql`
+- **Sigma:** `sigma/windows_suspicious_encoded_powershell.yml`
+- **ATT&CK:** T1059.001 — PowerShell
+- **Use case:** highlight encoded-command and in-memory execution patterns for analyst review
+
+### 2. Rapid Cross-Location Sign-In Review
+
+- **KQL:** `detections/kql/impossible_travel_signin.kql`
+- **ATT&CK:** T1078 — Valid Accounts
+- **Use case:** surface rapid sign-ins from differing locations for contextual review
+
+## Validation philosophy
+
+The playbook is designed around a simple principle: a detection is not “good” merely because it fires.  It must be:
+
+- understandable
+- tunable
+- mapped to an attack hypothesis
+- reviewable for false positives
+- validated against representative data
+
+The repository includes `validation_guide.md` as a concise workflow for testing and refining rules before deployment.
 
 ## Quickstart
 
-1. Clone or fork this repository.
-2. Navigate to the `detections/` folder to explore platform‑specific examples.
-3. Read the corresponding detection document to understand the query,
-   MITRE mapping and tuning notes.
-4. Use the `docs/validation_guide.md` to set up a lab environment or use
-   your own logs to validate the detection and tailor it to your
-   environment.
-5. Convert Sigma rules in the `sigma/` folder to your platform using
-   [`sigma-cli`](https://github.com/SigmaHQ/sigma-cli) or similar tooling.
+```bash
+git clone https://github.com/Popoo2020/Detection-Engineering-Playbook.git
+cd Detection-Engineering-Playbook
 
-## Documentation
+python -m venv .venv
+source .venv/bin/activate
 
-The `docs/` directory contains:
+pip install -r requirements.txt
+pytest -q
+```
 
-* `validation_guide.md` – Step‑by‑step guide to testing detections and
-  evaluating their effectiveness.
+## Current CI coverage
 
-Future documents will cover naming conventions, metadata standards and
-guidance for mapping detection coverage by MITRE tactic.
+The CI workflow currently:
+
+- installs test/YAML dependencies
+- runs pytest
+- validates that Sigma files contain core structural metadata such as:
+  - title
+  - id
+  - logsource
+  - detection
+  - level
 
 ## Roadmap
 
-1. Add additional KQL, SPL, AQL and other detections across varied attack
-   tactics.
-2. Expand the Sigma rule set and provide conversion scripts.
-3. Develop a false‑positive playbook detailing common tuning knobs and
-   baseline methodologies.
-4. Introduce a dashboard template for visualising detection coverage by
-   tactic.
-5. Add CI workflows to lint and validate Sigma files.
+1. Add more KQL detections across credential access, persistence and privilege escalation
+2. Expand the Sigma catalogue
+3. Add SPL examples and conversion notes
+4. Add metadata schemas for detections
+5. Introduce a basic coverage dashboard by ATT&CK tactic / technique
+6. Add test fixtures for detection documentation consistency
 
-See `CONTRIBUTING.md` to learn how to contribute new detection rules or
-documentation.
+## Limitations
 
-## Known Limitations
-
-Only a small sample of detections is included.  These examples may not
-generalise to your environment without modification and additional
-tuning.  There is no automated validation pipeline in this repository; as
-more rules are added, a CI workflow should be created to lint and test
-them.  Always validate detections in a safe lab environment before
-deploying to production.
+- The rules are reference detections and require local tuning before production use
+- The rapid cross-location example is illustrative and should be adapted to real identity context and geo enrichment
+- Current automated tests validate structure, not analytical precision or recall
