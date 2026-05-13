@@ -1,0 +1,8 @@
+// Suspicious encoded PowerShell execution
+// MITRE ATT&CK: T1059.001 - PowerShell
+// Purpose: Surface process execution patterns commonly associated with encoded command abuse.
+DeviceProcessEvents
+| where FileName =~ "powershell.exe" or ProcessCommandLine has "powershell"
+| where ProcessCommandLine has_any (" -enc ", " -encodedcommand ", "FromBase64String", "IEX(")
+| project Timestamp, DeviceName, AccountName, InitiatingProcessFileName, FileName, ProcessCommandLine
+| order by Timestamp desc
