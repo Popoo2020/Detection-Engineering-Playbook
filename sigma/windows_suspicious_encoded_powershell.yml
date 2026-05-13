@@ -1,0 +1,28 @@
+title: Suspicious Encoded PowerShell Execution
+id: 5a8e8cd8-f2b9-4dc0-9aa4-1fd6a2e948a7
+status: experimental
+description: Detects PowerShell executions that include encoded command style arguments or common in-memory execution strings.
+author: Eric Ariel Rimon
+date: 2026/05/13
+references:
+  - https://attack.mitre.org/techniques/T1059/001/
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_image:
+    Image|endswith: '\\powershell.exe'
+  selection_cli:
+    CommandLine|contains:
+      - ' -enc '
+      - ' -encodedcommand '
+      - 'FromBase64String'
+      - 'IEX('
+  condition: selection_image and selection_cli
+falsepositives:
+  - Administrative scripts using encoded PowerShell for legitimate automation
+  - Security tooling or lab exercises
+level: medium
+tags:
+  - attack.execution
+  - attack.t1059.001
