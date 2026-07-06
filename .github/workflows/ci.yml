@@ -37,6 +37,14 @@ jobs:
         run: |
           python -m pytest -q
 
+      - name: Run Bandit SAST
+        run: |
+          if [ -d src ]; then
+            bandit -r src -ll
+          else
+            echo "No src directory found; skipping Bandit."
+          fi
+
       - name: Audit Python dependencies
         run: |
           pip-audit -r requirements.txt
